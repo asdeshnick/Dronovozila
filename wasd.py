@@ -11,6 +11,20 @@ from pioneer_sdk import VideoStream
 плюс импортов добавить 
  """
 
+from pioneer_sdk import Pioneer, Camera
+import cv2
+import numpy as np
+import time
+from main import find_people, load_model
+from pioneer_sdk import VideoStream
+
+
+
+"""
+добавить модель
+плюс импортов добавить 
+ """
+
 def dronovozka():
 
     if __name__ == "__main__":
@@ -29,7 +43,7 @@ def dronovozka():
         camera = Camera()
         min_v = 1300
         max_v = 1700
-        model = "yolo11n.pt"
+        model = load_model("yolo11n.pt")
         try:
             while True:
                 ch_1 = 1500
@@ -37,14 +51,30 @@ def dronovozka():
                 ch_3 = 1500
                 ch_4 = 1500
                 ch_5 = 2000
-                frame = camera.get_frame()
-                if frame is not None:
-                    camera_frame = cv2.imdecode(
-                        np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
-                    )
-                    camera_frame = find_people(model, VideoStream())
-                    cv2.imshow("pioneer_camera_stream", camera_frame)
-                    
+                k = 0
+                try:
+                    frame = camera.get_frame()
+                    if frame is not None:
+                        camera_frame = cv2.imdecode(
+                            np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
+                        )
+                        print(camera_frame)
+                        camera_frame = find_people(model, camera_frame)
+                        k = 1
+                except:
+                    print("ошибка декодирования 1")
+                if k == 0:
+                    try:
+                        camera_frame = camera.get_cv_frame()
+                        print(camera_frame)
+                        camera_frame = find_people(model, camera_frame)
+                    except:
+                        print("ошибка декодирования 2")
+
+                print(camera_frame)
+                camera_frame = find_people(model, camera_frame)
+                cv2.imshow("pioneer_camera_stream", camera_frame)
+                
                 key = cv2.waitKey(1)
                 if key == 27:  # esc
                     print("esc pressed")
