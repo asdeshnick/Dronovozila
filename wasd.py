@@ -3,20 +3,6 @@ import cv2
 import numpy as np
 import time
 from main import find_people
-from pioneer_sdk import VideoStream
-
-
-"""
-добавить модель
-плюс импортов добавить 
- """
-
-from pioneer_sdk import Pioneer, Camera
-import cv2
-import numpy as np
-import time
-from main import find_people, load_model
-from pioneer_sdk import VideoStream
 
 
 

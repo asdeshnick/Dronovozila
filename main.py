@@ -4,11 +4,10 @@ import torch
 import os
 import time 
 import numpy as np
-from webcamera import webcam
-#from wasd import camera_frame
+
 """
 засечь время 
-и запустить функцию 100 раз 
+и запустить функцию 100 раз
 """
 
 
