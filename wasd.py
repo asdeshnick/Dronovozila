@@ -2,7 +2,7 @@ from pioneer_sdk import Pioneer, Camera
 import cv2
 import numpy as np
 import time
-from main import find_people, load_model
+# from main import find_people, load_model
 
 
 
@@ -13,102 +13,106 @@ from main import find_people, load_model
 
 def dronovozka():
 
-    if __name__ == "__main__":
-        print(
-            """
-        1 -- arm
-        2 -- disarm
-        3 -- takeoff
-        4 -- land
+   
+    print(
+        """
+    1 -- arm
+    2 -- disarm
+    3 -- takeoff
+    4 -- land
 
-        ↶q  w↑  e↷    i-↑
-        ←a      d→     k-↓
-            s↓"""
-        )
-        pioneer_mini = Pioneer()
-        camera = Camera()
-        min_v = 1300
-        max_v = 1700
-        model = load_model("yolo11n.pt")
-        try:
-            while True:
-                ch_1 = 1500
-                ch_2 = 1500
-                ch_3 = 1500
-                ch_4 = 1500
-                ch_5 = 2000
-                k = 0
+    ↶q  w↑  e↷    i-↑
+    ←a      d→     k-↓
+        s↓"""
+    )
+    pioneer_mini = Pioneer()
+    camera = Camera()
+    min_v = 1300
+    max_v = 1700
+    
+    #model = load_model("yolo11n.pt")
+    try:
+        while True:
+            ch_1 = 1500
+            ch_2 = 1500
+            ch_3 = 1500
+            ch_4 = 1500
+            ch_5 = 2000
+            k = 0
+            try:
+                frame = camera.get_frame()
+                print("fjdsfjs")
+                if frame is not None:
+                    camera_frame = cv2.imdecode(
+                        np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
+                    )
+                    print(camera_frame)
+#                    camera_frame = find_people(model, camera_frame)
+                    k = 1
+            except Exception as e:
+                print(e)
+                print("ошибка декодирования 1")
+            if k == 0:
                 try:
-                    frame = camera.get_frame()
-                    if frame is not None:
-                        camera_frame = cv2.imdecode(
-                            np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
-                        )
-                        print(camera_frame)
-                        camera_frame = find_people(model, camera_frame)
-                        k = 1
+                    camera_frame = camera.get_cv_frame()
+                    print(camera_frame)
+    #                  camera_frame = find_people(model, camera_frame)
                 except:
-                    print("ошибка декодирования 1")
-                if k == 0:
-                    try:
-                        camera_frame = camera.get_cv_frame()
-                        print(camera_frame)
-                        camera_frame = find_people(model, camera_frame)
-                    except:
-                        print("ошибка декодирования 2")
+                    print("ошибка декодирования 2")
 
-                print(camera_frame)
-                camera_frame = find_people(model, camera_frame)
-                cv2.imshow("pioneer_camera_stream", camera_frame)
-                
-                key = cv2.waitKey(1)
-                if key == 27:  # esc
-                    print("esc pressed")
-                    cv2.destroyAllWindows()
-                    pioneer_mini.land()
-                    break
-                elif key == ord("1"):
-                    pioneer_mini.arm()
-                elif key == ord("2"):
-                    pioneer_mini.disarm()
-                elif key == ord("3"):
-                    time.sleep(2)
-                    pioneer_mini.arm()
-                    time.sleep(1)
-                    pioneer_mini.takeoff()
-                    time.sleep(2)
-                elif key == ord("4"):
-                    time.sleep(2)
-                    pioneer_mini.land()
-                    time.sleep(2)
-                elif key == ord("w"):
-                    ch_3 = min_v
-                elif key == ord("s"):
-                    ch_3 = max_v
-                elif key == ord("a"):
-                    ch_4 = min_v
-                elif key == ord("d"):
-                    ch_4 = max_v
-                elif key == ord("q"):
-                    ch_2 = 2000
-                elif key == ord("e"):
-                    ch_2 = 1000
-                elif key == ord("i"):
-                    ch_1 = 2000
-                elif key == ord("k"):
-                    ch_1 = 1000
+            cv2.imshow("pioneer_camera_stream", camera_frame)
+            
+            key = cv2.waitKey(1)
+            if key == 27:  # esc
+                print("esc pressed")
+                cv2.destroyAllWindows()
+                pioneer_mini.land()
+                break
+            elif key == ord("1"):
+                pioneer_mini.arm()
+            elif key == ord("2"):
+                pioneer_mini.disarm()
+            elif key == ord("3"):
+                time.sleep(2)
+                pioneer_mini.arm()
+                time.sleep(1)
+                pioneer_mini.takeoff()
+                time.sleep(2)
+            elif key == ord("4"):
+                time.sleep(2)
+                pioneer_mini.land()
+                time.sleep(2)
+            elif key == ord("w"):
+                ch_3 = min_v
+            elif key == ord("s"):
+                ch_3 = max_v
+            elif key == ord("a"):
+                ch_4 = min_v
+            elif key == ord("d"):
+                ch_4 = max_v
+            elif key == ord("q"):
+                ch_2 = 2000
+            elif key == ord("e"):
+                ch_2 = 1000
+            elif key == ord("i"):
+                ch_1 = 2000
+            elif key == ord("k"):
+                ch_1 = 1000
 
-                pioneer_mini.send_rc_channels(
-                    channel_1=ch_1,
-                    channel_2=ch_2,
-                    channel_3=ch_3,
-                    channel_4=ch_4,
-                    channel_5=ch_5,
-                )
-                time.sleep(0.02)
-        finally:
-            time.sleep(1)
-            pioneer_mini.land()
+            pioneer_mini.send_rc_channels(
+                channel_1=ch_1,
+                channel_2=ch_2,
+                channel_3=ch_3,
+                channel_4=ch_4,
+                channel_5=ch_5,
+            )
+            time.sleep(0.02)
+    finally:
+        time.sleep(1)
+        pioneer_mini.land()
 
-            pioneer_mini.close_connection()
-            del pioneer_mini
+        pioneer_mini.close_connection()
+        del pioneer_mini
+
+if __name__ == "__main__":
+    dronovozka()
