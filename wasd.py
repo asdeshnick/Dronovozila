@@ -2,7 +2,7 @@ from pioneer_sdk import Pioneer, Camera
 import cv2
 import numpy as np
 import time
-# from main import find_people, load_model
+from main import find_people, load_model
 
 
 
@@ -30,7 +30,7 @@ def dronovozka():
     min_v = 1300
     max_v = 1700
     
-    #model = load_model("yolo11n.pt")
+    model = load_model("yolo11n.pt")
     try:
         while True:
             ch_1 = 1500
@@ -47,7 +47,7 @@ def dronovozka():
                         np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
                     )
                     print(camera_frame)
-#                    camera_frame = find_people(model, camera_frame)
+                    camera_frame = find_people(model, camera_frame)
                     k = 1
             except Exception as e:
                 print(e)
@@ -56,7 +56,7 @@ def dronovozka():
                 try:
                     camera_frame = camera.get_cv_frame()
                     print(camera_frame)
-    #                  camera_frame = find_people(model, camera_frame)
+                    camera_frame = find_people(model, camera_frame)
                 except:
                     print("ошибка декодирования 2")
 
