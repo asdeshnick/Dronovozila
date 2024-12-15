@@ -32,6 +32,8 @@ def dronovozka():
     
     model = load_model("yolo11n.pt")
     try:
+        frame_number = 0
+        step_detection = 9
         while True:
             ch_1 = 1500
             ch_2 = 1500
@@ -39,29 +41,36 @@ def dronovozka():
             ch_4 = 1500
             ch_5 = 2000
             k = 0
+            
             try:
                 frame = camera.get_frame()
-                print("fjdsfjs")
+                # print("fjdsfjs")
                 if frame is not None:
                     camera_frame = cv2.imdecode(
                         np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
                     )
-                    print(camera_frame)
-                    camera_frame = find_people(model, camera_frame)
+                    # print(camera_frame)
+                    # camera_frame = find_people(model, camera_frame)
                     k = 1
             except Exception as e:
                 print(e)
                 print("ошибка декодирования 1")
+                
             if k == 0:
                 try:
                     camera_frame = camera.get_cv_frame()
                     print(camera_frame)
-                    camera_frame = find_people(model, camera_frame)
+                    # camera_frame = find_people(model, camera_frame)
                 except:
                     print("ошибка декодирования 2")
+            if frame_number % step_detection == 0:
+                results = model.track(camera_frame, classes = [0], persist=True, verbose=False)[0]
+                img = results.plot()
 
-            cv2.imshow("pioneer_camera_stream", camera_frame)
-            
+            cv2.imshow("pioneer_camera_stream", img)
+            # cv2.imshow("pioneer_camera_stream", camera_frame) или с дрона или с нейронкой
+            frame_number += 1
+                        
             key = cv2.waitKey(1)
             if key == 27:  # esc
                 print("esc pressed")
