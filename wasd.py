@@ -2,14 +2,10 @@ from pioneer_sdk import Pioneer, Camera
 import cv2
 import numpy as np
 import time
-from main import find_people, load_model
+from main import load_model
 
 
-
-"""
-добавить модель
-плюс импортов добавить 
- """
+model = load_model("yolo11n.pt")
 
 def dronovozka():
 
@@ -30,7 +26,6 @@ def dronovozka():
     min_v = 1300
     max_v = 1700
     
-    model = load_model("yolo11n.pt")
     try:
         frame_number = 0
         step_detection = 9
@@ -44,13 +39,13 @@ def dronovozka():
             
             try:
                 frame = camera.get_frame()
-                # print("fjdsfjs")
+                #print("fjdsfjs")
                 if frame is not None:
                     camera_frame = cv2.imdecode(
                         np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
                     )
-                    # print(camera_frame)
-                    # camera_frame = find_people(model, camera_frame)
+                    print(camera_frame)
+                    #camera_frame = find_people(model, camera_frame)
                     k = 1
             except Exception as e:
                 print(e)
@@ -60,7 +55,7 @@ def dronovozka():
                 try:
                     camera_frame = camera.get_cv_frame()
                     print(camera_frame)
-                    # camera_frame = find_people(model, camera_frame)
+                    #camera_frame = find_people(model, camera_frame)
                 except:
                     print("ошибка декодирования 2")
             if frame_number % step_detection == 0:
@@ -68,7 +63,7 @@ def dronovozka():
                 img = results.plot()
 
             cv2.imshow("pioneer_camera_stream", img)
-            # cv2.imshow("pioneer_camera_stream", camera_frame) или с дрона или с нейронкой
+            #cv2.imshow("pioneer_camera_stream", camera_frame) # или с дрона или с нейронкой
             frame_number += 1
                         
             key = cv2.waitKey(1)

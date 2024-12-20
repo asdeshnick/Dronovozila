@@ -26,7 +26,7 @@ while True:
         break
     if frame_number % step_detection == 0:
 
-        results = model.track(frame, classes = [0], persist=True, verbose=False)[0]
+        results = model.track(frame, classes = [0], persist=True, verbose=False, imgsz=480)[0]
 
         img = results.plot()
         
