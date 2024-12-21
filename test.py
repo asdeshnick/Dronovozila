@@ -13,7 +13,7 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 
 
 frame_number = 0
-step_detection = 9
+step_detection = 10
 class_name = 0
 
 total_frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
