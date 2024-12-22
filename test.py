@@ -13,7 +13,7 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 
 
 frame_number = 0
-step_detection = 10
+step_detection = 5
 class_name = 0
 
 total_frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -26,7 +26,7 @@ while True:
         break
     if frame_number % step_detection == 0:
 
-        results = model.track(frame, classes = [0], persist=True, verbose=False, imgsz=480)[0]
+        results = model.track(frame, classes = [0], persist=True, verbose=False, imgsz=640)[0]
 
         img = results.plot()
         

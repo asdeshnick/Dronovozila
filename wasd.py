@@ -28,7 +28,7 @@ def dronovozka():
     
     try:
         frame_number = 0
-        step_detection = 10
+        step_detection = 9
         while True:
             ch_1 = 1500
             ch_2 = 1500
@@ -62,8 +62,8 @@ def dronovozka():
                 results = model.track(camera_frame, classes = [0], persist=True, verbose=False)[0]
                 img = results.plot()
 
-            # cv2.imshow("pioneer_camera_stream", img)
-            cv2.imshow("pioneer_camera_stream", camera_frame) # или с дрона или с нейронкой
+            cv2.imshow("pioneer_camera_stream", img)
+            #cv2.imshow("pioneer_camera_stream", camera_frame) # или с дрона или с нейронкой
             frame_number += 1
                         
             key = cv2.waitKey(1)
