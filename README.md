@@ -23,3 +23,6 @@ import time
 import numpy as np
 from pioneer_sdk import Pioneer, Camera
 ```
+
+#### кофигурация 
+`step_detection` шаг для взятие кадра 
