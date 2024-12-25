@@ -12,8 +12,6 @@ import time
  """
 
 def dronovozka():
-
-    if __name__ == "__main__":
         print(
             """
         1 -- arm
@@ -44,7 +42,7 @@ def dronovozka():
                     )
                     # camera_frame = find_people(model, VideoStream())
                     cv2.imshow("pioneer_camera_stream", camera_frame)
-                    
+                    print(camera_frame)
                 key = cv2.waitKey(1)
                 if key == 27:  # esc
                     print("esc pressed")
@@ -96,3 +94,6 @@ def dronovozka():
 
             pioneer_mini.close_connection()
             del pioneer_mini
+
+if __name__ == "__main__":
+    dronovozka()
