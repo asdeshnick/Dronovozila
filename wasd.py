@@ -2,8 +2,8 @@ from pioneer_sdk import Pioneer, Camera
 import cv2
 import numpy as np
 import time
-from main import find_people
-from pioneer_sdk import VideoStream
+#from main import find_people
+#from pioneer_sdk import VideoStream
 
 
 """
@@ -42,7 +42,7 @@ def dronovozka():
                     camera_frame = cv2.imdecode(
                         np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR
                     )
-                    camera_frame = find_people(model, VideoStream())
+                    # camera_frame = find_people(model, VideoStream())
                     cv2.imshow("pioneer_camera_stream", camera_frame)
                     
                 key = cv2.waitKey(1)
